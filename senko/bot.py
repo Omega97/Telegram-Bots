@@ -1,5 +1,7 @@
 import requests
-from senko.utils import deep_search_key
+from senko.update import Update
+from senko.__init__ import DATA_PATH
+from senko.utils import save
 
 
 class TelegramBot:
@@ -54,55 +56,26 @@ class TelegramBot:
             self.get_updates(offset=self.new_offset)
             if self.updates:    # > 1 when there are several unread messages
                 for i in self.updates:
+                    # update
                     current_update = Update(i)
-
                     self.update_id = current_update['update_id']
                     self.chat_id = current_update['message chat id']
 
-                    # self.report(current_update, inline=1)
+                    # report received message
+                    # print('\n')
+                    # print(current_update)
+                    # self.report(str(current_update.dictionary), inline=1)
+                    current_update.save(DATA_PATH)
                     self.report(str(current_update['message from first_name']) + ' :', inline=1)
                     for j in str(current_update['message text']).split('\n'):
                         self.report('\t' * 4 + j)
 
-                    # compute answer to message
+                    # compute answer and send message
                     self.last_msg = self.core(current_update)
-
                     self.send_message(self.chat_id, self.last_msg)
+
+                    # report sent message
                     self.report('response : ', inline=1)
                     for j in str(self.last_msg).split('\n'):
                         self.report('\t' * 4 + j)
-
-
-class Update:
-    def __init__(self, dictionary):
-        self.d = dictionary
-
-    def __getitem__(self, item):
-        return deep_search_key(self.d, item)
-
-    def get_name(self):
-        if 'first_name' in self['message']:
-            return self['message chat first_name']
-        elif 'new_chat_member' in self['message']:
-            return self['message new_chat_member username']
-        elif 'from' in self['message']:
-            return self['message from first_name']
-        else:
-            return "???"
-
-    def __repr__(self):
-        return str(self.d)
-
-
-if __name__ == '__main__':
-    u = Update({'update_id': 112387790,
-                'message': {'message_id': 453,
-                            'from': {'id': 156267213, 'is_bot': False, 'first_name': 'Omar',
-                                     'last_name': 'Cusma Fait', 'username': 'TheOmega0',
-                                     'language_code': 'it'},
-                            'chat': {'id': 156267213, 'first_name': 'Omar',
-                                     'last_name': 'Cusma Fait', 'username': 'TheOmega0',
-                                     'type': 'private'}, 'date': 1571210629, 'text': 'sa'}}
-               )
-
-    print(u.get_name())
+                    save(self.last_msg, DATA_PATH)

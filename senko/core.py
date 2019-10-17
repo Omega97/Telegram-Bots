@@ -3,8 +3,14 @@ from senko.utils import emoji_fox
 from senko.utils import read_file
 from senko.wolfram_alpha_api import get_wolfram_alpha_id, get_wolfram_alpha_answer
 
+
 def mirror_core(update) -> str:
-    return update['message text']
+    if update['message text']:
+        return update['message text']
+    elif update.is_sticker():
+        return update['message sticker emoji']
+    elif update.is_animation():
+        return 'What a cool gif!'
 
 
 def sample_core(update) -> str:
@@ -36,4 +42,5 @@ def wolfram_core(update) -> str:
     message = update['message text'] if update['message text'] else ''
     PATH = 'C:\\Program Files\\Telegram\\wolframalpha.txt'
     ID = get_wolfram_alpha_id(PATH)
-    return get_wolfram_alpha_answer(question=message, wolfram_alpha_id=ID)
+    out = get_wolfram_alpha_answer(question=message, wolfram_alpha_id=ID)
+    return out if out else mirror_core(update)

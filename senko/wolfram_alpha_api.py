@@ -18,14 +18,14 @@ def get_wolfram_alpha_answer(question: str, wolfram_alpha_id) -> str:
     try:
         res = client.query(question)
     except Exception as e:
-        print(e)
-        return '???'
+        print('\t' * 8, '1) ', e)
+        return ''
 
     try:
         return next(res.results).text
 
     except Exception as e:
-        print(e)
+        print('\t' * 8, '2) ', e)
 
     try:
         out = ''
@@ -36,7 +36,7 @@ def get_wolfram_alpha_answer(question: str, wolfram_alpha_id) -> str:
     except Exception as e:
         print(e)
 
-    return 'Hsiaaa! Just what are you asking?! Hsiaaa!'
+    return ''
 
 
 if __name__ == '__main__':
