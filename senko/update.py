@@ -27,8 +27,11 @@ class Update:
     def is_animation(self):
         return self['message animation'] is not None
 
+    def is_photo(self):
+        return self['message photo'] is not None
+
     def is_vocal(self):
-        return self['voice'] is not None
+        return self['message voice'] is not None
 
     def save(self, path):
         save_update(self, path)

@@ -14,29 +14,19 @@ def get_wolfram_alpha_id(path):
 
 
 def get_wolfram_alpha_answer(question: str, wolfram_alpha_id) -> str:
+    """answer to rhe question using the """
     client = wa.Client(wolfram_alpha_id)
+
     try:
         res = client.query(question)
     except Exception as e:
-        print('\t' * 8, '1) ', e)
+        print('\t' * 8, 'Wolfram error 1:', e)
         return ''
 
-    try:
-        return next(res.results).text
+    out = [pod.text for pod in res.pods][1:]
+    out = '\n'.join([str(i) for i in out if i != None])
 
-    except Exception as e:
-        print('\t' * 8, '2) ', e)
-
-    try:
-        out = ''
-        for pod in res.pods:
-            for sub in pod.subpods:
-                out += str(sub.text) + '\n'
-        return out
-    except Exception as e:
-        print(e)
-
-    return ''
+    return out
 
 
 if __name__ == '__main__':

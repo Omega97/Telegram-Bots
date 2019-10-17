@@ -78,4 +78,4 @@ class TelegramBot:
                     self.report('response : ', inline=1)
                     for j in str(self.last_msg).split('\n'):
                         self.report('\t' * 4 + j)
-                    save(self.last_msg, DATA_PATH)
+                        save(j, DATA_PATH)

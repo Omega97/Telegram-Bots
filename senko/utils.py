@@ -92,7 +92,8 @@ KEYS = ['update_id',
 
 emoji_smiling_face = u'\U0001F60A'
 emoji_fox = u'\U0001F98A'
-emoji_white_question_mark = u'\U00002754'
+emoji_question_mark = u'\U00002753'
+emoji_exclamation_mark = u'\U00002757'
 
 
 def senko_detector(s, key='senko'):
@@ -105,4 +106,6 @@ def senko_detector(s, key='senko'):
 
 
 if __name__ == '__main__':
-    ...
+
+    a = {'@title': 'Result', '@scanner': 'Data', '@id': 'Result', '@position': '200', '@error': 'false', '@numsubpods': '1', '@primary': 'true', 'subpod': {'@title': '', 'microsources': {'microsource': 'PlanetData'}, 'datasources': {'datasource': ['AllensAstrophysicalQuantities', 'SolarSystemDynamics', 'NationalSpaceScienceDataCenter']}, 'img': {'@src': 'https://www5b.wolframalpha.com/Calculate/MSP/MSP74891i805879d060fc7a00006490cae6ahd5aa5i?MSPStoreType=image/gif&s=49', '@alt': '0.5', '@title': '0.5', '@width': '20', '@height': '18', '@type': 'Default', '@themes': '1,2,3,4,5,6,7,8,9,10,11,12', '@colorinvertable': 'true'}, 'plaintext': '0.5'}, 'expressiontypes': {'@count': '1', 'expressiontype': {'@name': 'Default'}}, 'states': {'@count': '1', 'state': {'@name': 'Show details', '@input': 'Result__Show details'}}}
+    print(display(a))

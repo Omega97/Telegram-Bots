@@ -1,5 +1,5 @@
 from random import randrange
-from senko.utils import emoji_fox, emoji_white_question_mark, read_file, senko_detector
+from senko.utils import emoji_fox, emoji_question_mark, read_file, senko_detector, emoji_exclamation_mark
 from senko.wolfram_alpha_api import get_wolfram_alpha_id, get_wolfram_alpha_answer
 
 
@@ -10,8 +10,11 @@ def mirror_core(update) -> str:
         return update['message sticker emoji']
     elif update.is_animation():
         return 'What a cool gif!'
+    elif update.is_photo():
+        return "Cool!"
     elif update.is_vocal():
         return "That's interesting!"
+
 
 def sample_core(update) -> str:
     koshujin_sama = update['message from first_name']
@@ -40,14 +43,18 @@ def gif_core(_) -> str:
 
 def simple_senko_core(update) -> str:
     if update['message text']:
-        if senko_detector(update['message text']):
+        if senko_detector(update['message text'], key='senko'):
             return emoji_fox
+        elif senko_detector(update['message text'], key='mofu'):
+            return emoji_fox + emoji_exclamation_mark
         else:
-            return emoji_fox + emoji_white_question_mark
+            return emoji_fox + emoji_question_mark
     elif update.is_sticker():
         return update['message sticker emoji']
     elif update.is_animation():
         return 'What a cool gif!'
+    elif update.is_photo():
+        return "Cool!"
     elif update.is_vocal():
         return "That's interesting!"
 
