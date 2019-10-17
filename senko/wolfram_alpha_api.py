@@ -23,10 +23,15 @@ def get_wolfram_alpha_answer(question: str, wolfram_alpha_id) -> str:
         print('\t' * 8, 'Wolfram error 1:', e)
         return ''
 
-    out = [pod.text for pod in res.pods][1:]
-    out = '\n'.join([str(i) for i in out if i != None])
+    try:
+        out = [pod.text for pod in res.pods][1:]
+        out = '\n'.join([str(i) for i in out if i != None])
+        return out
+    except Exception as e:
+        print('\t' * 8, 'Wolfram error 1:', e)
 
-    return out
+    return ''
+
 
 
 if __name__ == '__main__':

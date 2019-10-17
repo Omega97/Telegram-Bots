@@ -1,5 +1,5 @@
 from random import randrange
-from senko.utils import emoji_fox, emoji_question_mark, read_file, senko_detector, emoji_exclamation_mark
+from senko.utils import read_file, senko_detector, emoji
 from senko.wolfram_alpha_api import get_wolfram_alpha_id, get_wolfram_alpha_answer
 
 
@@ -22,15 +22,15 @@ def sample_core(update) -> str:
 
     message = update['message text'] if update['message text'] else ''
 
-    out = [emoji_fox + koshujin_sama + '-chaaan!'] * 2 + \
+    out = [emoji['fox'] + koshujin_sama + '-chaaan!'] * 2 + \
           [message] * 2 + \
           [
-              '"' + message + '" is a Jojo reference ' + emoji_fox,
-              emoji_fox * len(message),
+              '"' + message + '" is a Jojo reference ' + emoji['fox'],
+              emoji['fox'] * len(message),
               'Okaeri nanojya!',
               'Kyou mo otsukaresama!',
               'Suki na dake amaete ii nojya!',
-              'Genki de ite ne ' + emoji_fox
+              'Genki de ite ne ' + emoji['fox']
           ]
 
     return out[randrange(len(out))]
@@ -44,11 +44,13 @@ def gif_core(_) -> str:
 def simple_senko_core(update) -> str:
     if update['message text']:
         if senko_detector(update['message text'], key='senko'):
-            return emoji_fox
+            return emoji['fox']
         elif senko_detector(update['message text'], key='mofu'):
-            return emoji_fox + emoji_exclamation_mark
+            return emoji['fox'] + emoji['exclamation_mark']
+        elif senko_detector(update['message text'], key='nyan'):
+            return emoji['cat_face']
         else:
-            return emoji_fox + emoji_question_mark
+            return emoji['fox'] + emoji['question_mark']
     elif update.is_sticker():
         return update['message sticker emoji']
     elif update.is_animation():
@@ -65,3 +67,9 @@ def wolfram_core(update) -> str:
     ID = get_wolfram_alpha_id(PATH)
     out = get_wolfram_alpha_answer(question=message, wolfram_alpha_id=ID)
     return out if out else simple_senko_core(update)
+
+if __name__ == '__main__':
+    print(emoji['fox'])
+    print(emoji['question_mark'])
+    print(emoji['exclamation_mark'])
+    print(emoji['cat_face'])
