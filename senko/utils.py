@@ -92,6 +92,16 @@ KEYS = ['update_id',
 
 emoji_smiling_face = u'\U0001F60A'
 emoji_fox = u'\U0001F98A'
+emoji_white_question_mark = u'\U00002754'
+
+
+def senko_detector(s, key='senko'):
+    s_ = ' ' + s
+    s_ = ''.join([s_[i] for i in range(1, len(s_)) if s_[i]!=s_[i-1]])
+    for i in range(len(s_)-len(key)+1):
+        if (s_[i:i+len(key)]).lower() == key.lower():
+            return True
+    return False
 
 
 if __name__ == '__main__':

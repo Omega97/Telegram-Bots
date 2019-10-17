@@ -1,6 +1,5 @@
 from random import randrange
-from senko.utils import emoji_fox
-from senko.utils import read_file
+from senko.utils import emoji_fox, emoji_white_question_mark, read_file, senko_detector
 from senko.wolfram_alpha_api import get_wolfram_alpha_id, get_wolfram_alpha_answer
 
 
@@ -11,7 +10,8 @@ def mirror_core(update) -> str:
         return update['message sticker emoji']
     elif update.is_animation():
         return 'What a cool gif!'
-
+    elif update.is_vocal():
+        return "That's interesting!"
 
 def sample_core(update) -> str:
     koshujin_sama = update['message from first_name']
@@ -38,9 +38,23 @@ def gif_core(_) -> str:
     return out[randrange(len(out))]
 
 
+def simple_senko_core(update) -> str:
+    if update['message text']:
+        if senko_detector(update['message text']):
+            return emoji_fox
+        else:
+            return emoji_fox + emoji_white_question_mark
+    elif update.is_sticker():
+        return update['message sticker emoji']
+    elif update.is_animation():
+        return 'What a cool gif!'
+    elif update.is_vocal():
+        return "That's interesting!"
+
+
 def wolfram_core(update) -> str:
     message = update['message text'] if update['message text'] else ''
     PATH = 'C:\\Program Files\\Telegram\\wolframalpha.txt'
     ID = get_wolfram_alpha_id(PATH)
     out = get_wolfram_alpha_answer(question=message, wolfram_alpha_id=ID)
-    return out if out else mirror_core(update)
+    return out if out else simple_senko_core(update)
